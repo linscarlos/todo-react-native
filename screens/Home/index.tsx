@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from "react";
-import { View, Image, TextInput, TouchableOpacity, Text, FlatList, Pressable, PressableProps } from "react-native";
+import { useState } from "react";
+import { View, Image, TextInput, TouchableOpacity, Text, FlatList, Pressable, Alert } from "react-native";
 
 import { MaterialIcons, Feather } from '@expo/vector-icons';
 import uuid from 'react-native-uuid';
@@ -50,8 +50,37 @@ export default function Home() {
         })
 
         setTasks(listTaskUpdate)
-
       }
+
+      function handleDeleteTask(event: String ) {
+        const idEvent = event;
+
+        function removeTask(){
+            const taskWithoutDeletedOne = tasks.filter(task => {
+                if(task.id != idEvent){
+                    return task
+                }else{
+                    if(task.isComplete === true){
+                        setTaskCompleted(count => count - 1 )
+                    }
+                }
+            })
+
+            setTasks(taskWithoutDeletedOne)
+        }
+
+        Alert.alert("Remover", `Remover esta tarefa?`, [
+            {
+              text: 'Sim',
+              onPress: () => removeTask(),
+            },
+            {
+              text: 'Não',
+              style: 'cancel'
+            }
+          ])
+
+        }
 
     return (
         <View style={styles.container}>
@@ -114,7 +143,10 @@ export default function Home() {
                                     {item.title}
                                     </Text>
                                     }
-                                <Feather name="trash-2" size={18} color="#808080" />
+                                <Pressable onPress={() => handleDeleteTask(String(item.id))}>
+                                    <Feather name="trash-2" size={18} color="#808080" />
+                                </Pressable>
+                                
                             </View>
                         )}
                             showsVerticalScrollIndicator={false}
