@@ -18,7 +18,7 @@ export default function Home() {
     const [focus, setFocus] = useState(false);
     
     const [newTaskTitle, setNewTaskTitle] = useState('');
-    const [checked, setChecked] = useState(false);
+    const [taskCompleted, setTaskCompleted] = useState(0);
 
     function handleAddNewTask() {
 
@@ -39,11 +39,11 @@ export default function Home() {
 
                 task.isComplete = !task.isComplete;
 
-                // if(task.isComplete === true){
-                //     setCountTaskCompleted(count => count + 1 )
-                // }else(
-                //     setCountTaskCompleted(count => count - 1 )
-                // )
+                if(task.isComplete === true){
+                    setTaskCompleted(count => count + 1)
+                }else(
+                    setTaskCompleted(count => count - 1 )
+                )
             }
 
             return task;
@@ -81,12 +81,12 @@ export default function Home() {
                 <View style={styles.containerTitleListAll}>
                     <View style={styles.containerTitleList}>
                         <Text style={styles.titleListCreate}>Criadas</Text>
-                        <View style={styles.containerNumberTitleList}><Text style={styles.numberTitleList}>0</Text></View>
+                        <View style={styles.containerNumberTitleList}><Text style={styles.numberTitleList}>{tasks.length}</Text></View>
                     </View>
 
                     <View style={styles.containerTitleList}>
                         <Text style={styles.titleListFinalized}>Concluídas</Text>
-                        <View style={styles.containerNumberTitleList}><Text style={styles.numberTitleList}>0</Text></View>
+                        <View style={styles.containerNumberTitleList}><Text style={styles.numberTitleList}>{taskCompleted}</Text></View>
                     </View>
                 </View>
 
