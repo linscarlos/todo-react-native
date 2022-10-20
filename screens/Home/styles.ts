@@ -122,5 +122,36 @@ export const styles = StyleSheet.create({
     subtitleEmptyList: {
         color: '#808080',
         fontSize: 14,
+    },
+
+    taskListIncomplete: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        backgroundColor: '#262626',
+        borderWidth: 1,
+        borderColor: '#333333',
+        borderRadius: 8,
+
+        marginTop: 20
+    },
+
+    taskTitleList: {
+        fontSize: 14,
+        color: '#F2F2F2',
+        width: '70%',
+        marginLeft: 8,
+        marginRight: 18
+    },
+
+    taskTitleListActive: {
+        fontSize: 14,
+        color: '#808080',
+        width: '70%',
+        marginLeft: 8,
+        marginRight: 18,
+        textDecorationLine: 'line-through'
     }
 });

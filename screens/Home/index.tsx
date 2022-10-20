@@ -1,16 +1,57 @@
-import { useState } from "react";
-import { View, Image, TextInput, TouchableOpacity, Text, FlatList } from "react-native";
+import { ChangeEvent, useState } from "react";
+import { View, Image, TextInput, TouchableOpacity, Text, FlatList, Pressable, PressableProps } from "react-native";
+
+import { MaterialIcons, Feather } from '@expo/vector-icons';
+import uuid from 'react-native-uuid';
+
 import { styles } from "./styles";
 
+interface Task {
+    id: string | number[],
+    title: string,
+    isComplete: boolean
+}
+
 export default function Home() {
+    const [tasks, setTasks] = useState<Task[]>([]);
+
     const [focus, setFocus] = useState(false);
-    const [tasks, setTasks] = useState<string[]>([]);
+    
     const [newTaskTitle, setNewTaskTitle] = useState('');
+    const [checked, setChecked] = useState(false);
 
     function handleAddNewTask() {
-        setTasks(prevState => [...prevState, newTaskTitle]);
+
+        setTasks([...tasks, {
+            id: uuid.v4(),
+            title: newTaskTitle,
+            isComplete: false
+        }]);
         setNewTaskTitle('');
     }
+
+    function onCheckmarkPress(Event: String) {
+
+        const idEvent = Event;
+
+        const listTaskUpdate = tasks.filter(task => {
+            if(task.id === idEvent){
+
+                task.isComplete = !task.isComplete;
+
+                // if(task.isComplete === true){
+                //     setCountTaskCompleted(count => count + 1 )
+                // }else(
+                //     setCountTaskCompleted(count => count - 1 )
+                // )
+            }
+
+            return task;
+        })
+
+        setTasks(listTaskUpdate)
+
+      }
 
     return (
         <View style={styles.container}>
@@ -51,9 +92,30 @@ export default function Home() {
 
                     <FlatList
                         data={tasks}
-                        keyExtractor={item => item}
-                        renderItem={({ item  }) => (
-                            <Text key={item}>Item 1: {item}</Text>
+                        keyExtractor={(item) => String(item.id)}
+                        renderItem={({ item }) => (
+                            <View style={styles.taskListIncomplete}>
+                                <Pressable onPress={() => onCheckmarkPress(String(item.id))}>
+                                    {item.isComplete 
+                                    ? 
+                                    <MaterialIcons name="check-circle" size={20} color="#5E60CE" /> 
+                                    : 
+                                    <MaterialIcons name="radio-button-unchecked" size={20} color="#4EA8DE" />
+                                    }
+                                </Pressable>
+
+                                    {item.isComplete 
+                                    ?
+                                    <Text style={styles.taskTitleListActive}>
+                                    {item.title}
+                                    </Text>
+                                    :
+                                    <Text style={styles.taskTitleList}>
+                                    {item.title}
+                                    </Text>
+                                    }
+                                <Feather name="trash-2" size={18} color="#808080" />
+                            </View>
                         )}
                             showsVerticalScrollIndicator={false}
                             ListEmptyComponent={() => (
